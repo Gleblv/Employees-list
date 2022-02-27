@@ -1,7 +1,7 @@
 import "./app-info.css";
 
 const AppInfo = () => {
-    return (
+    return ( // добавляем вёрстку
         <div className="app-info">
             <h1>Учёт сотрудников в компании N</h1>
             <h2>Общее число сотрудников: </h2>

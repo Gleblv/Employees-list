@@ -1,7 +1,7 @@
 import "./search-panel.css";
 
 const SearchPanel = () => {
-    return (
+    return ( // вёрстка
         <input 
             type="text"
             className="form-control search-input"

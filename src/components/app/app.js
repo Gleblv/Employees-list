@@ -7,13 +7,13 @@ import EmployeesAddForm from "../employees-add-form/employees-add-form.js";
 
 function App () {
 
-    const data = [
-        {name: "Alex", salary: 3000, increase: true},
-        {name: "John", salary: 5000, increase: false},
-        {name: "Carl W.", salary: 8000, increase: true},
+    const data = [ // имитация данных с сервера
+        {name: "Alex", salary: 3000, increase: true, id: 1},
+        {name: "John", salary: 5000, increase: false, id: 2},
+        {name: "Carl W.", salary: 8000, increase: true, id: 3},
     ];
 
-    return (
+    return ( // добавляем все компоненты на страницу
         <div className = "app">
             <AppInfo/>
 

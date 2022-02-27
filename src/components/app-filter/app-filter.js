@@ -1,6 +1,6 @@
 import "./app-filter.css";
 
-const AppFilter = () => {
+const AppFilter = () => { // дрбавляем вёрстку
     return (
         <div className="btn-group">
             <button 

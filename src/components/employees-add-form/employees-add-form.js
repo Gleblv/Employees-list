@@ -1,6 +1,6 @@
 import "./employees-add-form.css";
 
-const EmployeesAddForm = () => {
+const EmployeesAddForm = () => { // вёрстка
     return (
         <div className="app-add-form">
             <h3>Добавьте нового сотрудника</h3>
