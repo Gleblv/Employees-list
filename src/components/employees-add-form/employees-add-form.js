@@ -19,7 +19,9 @@ class EmployeesAddForm extends Component { // вёрстка
 
     onSubmit = (e) => { // функция для передачи данных в функция из App.js
         e.preventDefault();
-        this.props.onAdd(this.state.name, this.state.salary);
+        if (this.state.name !== "" && this.state.salary !== "") {
+            this.props.onAdd(this.state.name, this.state.salary);
+        }
         this.setState({ // после отправки данных в App.js очищаем форму
              name: "",
              salary: ""

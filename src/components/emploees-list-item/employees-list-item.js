@@ -1,49 +1,28 @@
 import "./employees-list-item.css";
-import { Component } from "react";
 
-class EmployeesListItem extends Component { // добавляем класс данные с сервера
-    constructor (props) {
-        super(props);
-        this.state = {
-            increase: false, // свойство отвечающее за повышение сотрудника
-            like: false
-        }
-    }
+function EmployeesListItem (props) { // добавляем класс данные с сервера
 
-    onIncrease = () => {
-        this.setState(({increase}) => ({ // деструктуризировали объект state прямо в аргументе
-            increase: !increase // устанавливаем новое свойство increase, которое будет противоположно предыдущему
-        }));
-    }
+    const {name, salary, onDelete, onToggleProp, increase, rise} = props;
 
-    addLike = () => {
-        this.setState(({like}) => ({
-            like: !like
-        }));
-    }
+    let classNames = "list-group-item d-flex justify-content-between";
 
-    render() {
-        const {name, salary, onDelete} = this.props;
-        const {increase, like} = this.state;
+    if (increase) {
+        classNames += " increase";
+    };
 
-        let classNames = "list-group-item d-flex justify-content-between";
-
-        if (increase) {
-            classNames += " increase";
-        };
-
-        if (like) {
-            classNames += " like";
-        };
+    if (rise) {
+        classNames += " like";
+    };
 
     return (
         <li className={classNames}>
-            <span onClick={this.addLike} className="list-group-item-label">{name}</span>
+            <span onClick={onToggleProp} className="list-group-item-label" data-toggle="rise">{name}</span> {/*С помощью data-атрибутов, передаём в обработчик события свойство которое нужно изменить*/}
             <input type="text" className="list-group-item-input" defaultValue={salary + "$"}/>
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     className="btn-cookie btn-sm " 
-                    onClick={this.onIncrease}>
+                    onClick={onToggleProp} 
+                    data-toggle="increase"> {/*назначаем data-атрибут*/}
                     <i className="fas fa-cookie"></i>
                 </button>
 
@@ -56,7 +35,6 @@ class EmployeesListItem extends Component { // добавляем класс д�
             </div>
         </li>
     );
-    }
 }
 
 export default EmployeesListItem;

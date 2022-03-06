@@ -12,12 +12,13 @@ class App extends Component {
         super(props);
         this.state = {
             data: [ // имитация данных с сервера
-                {name: "Alex", salary: 3000, increase: true, id: 1},
-                {name: "John", salary: 5000, increase: false, id: 2},
+                {name: "Alex I.", salary: 3000, increase: true, id: 1},
+                {name: "John A.", salary: 5000, increase: false, id: 2},
                 {name: "Carl W.", salary: 8000, increase: true, id: 3},
             ]
         };
         this.maxId = 3;
+        this.counter = 0;
     }
 
     deleteItem = (id) => {
@@ -33,7 +34,8 @@ class App extends Component {
             name, 
             salary,
             increase: false,
-            id: this.maxId++
+            rise: false,
+            id: ++this.maxId
         }
         this.setState(({data}) => { // пересоздаём data и добавляем в state
             const newArr = [...data, newItem];
@@ -43,10 +45,25 @@ class App extends Component {
         });
     }
 
+    onToggleProp = (id, prop) => {
+        this.setState(({data}) => ({
+            data: data.map(item => { // map создаёт новый массив
+                if (item.id === id) { // если мы находим элемент у которого id совпадает с пришедши id
+                    return {...item, [prop]: !item[prop]}; // вохвращаем новый объект, со всеми свойствами старого и изменённым prop
+                }
+                return item; // если условие не сработало, то возвращаем элемент в новый массив
+            })
+        }))
+    }
+
     render () {
+        const employees = this.state.data.length;
+        const increased = this.state.data.filter(item => item.increase).length;
         return ( // добавляем все компоненты на страницу
         <div className = "app">
-            <AppInfo/>
+            <AppInfo 
+            employees={employees}
+            increased={increased}/>
 
             <div className="search-panel">
                 <SearchPanel/>
@@ -55,7 +72,8 @@ class App extends Component {
 
             <EmployeesList 
             data={this.state.data}
-            onDelete={this.deleteItem}/> {/*Через пропс передаём метод*/}
+            onDelete={this.deleteItem}
+            onToggleProp={this.onToggleProp}/> {/*Через пропс передаём метод*/}
             <EmployeesAddForm
             onAdd={this.addItem}/>
         </div>
