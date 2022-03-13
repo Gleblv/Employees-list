@@ -15,7 +15,9 @@ class App extends Component {
                 {name: "Alex I.", salary: 3000, increase: true, id: 1},
                 {name: "John A.", salary: 5000, increase: false, id: 2},
                 {name: "Carl W.", salary: 8000, increase: true, id: 3},
-            ]
+            ],
+            term: "",
+            filter: ""
         };
         this.maxId = 3;
         this.counter = 0;
@@ -56,9 +58,50 @@ class App extends Component {
         }))
     }
 
+    searchEmp = (items, term) => { // метод для поиска; первый аргумерт - массив данных, второй - строка по которой происходит фильтрация
+        if (term.length === 0) {
+            return items;
+        };
+
+        if (term !== "") {
+            return items.filter(item => {
+                return item.name.indexOf(term) > -1; // ищет совпадения в строке 
+            });
+        }
+    }
+
+    onUpdateSearch = (term) => { // получаем строку, по которой будем фильтровать data из search-panel js
+        this.setState({term});
+    }
+
+    filterData = (items, filter) => {
+        switch (filter) {
+            case "salary":
+                return items.filter(item => {
+                    return item.salary > 1000;
+                });
+            case "rise": 
+                return items.filter(item => {
+                    return item.increase === true;
+                });
+            case "all":
+                return items;
+            default:
+                return items;
+        }
+    }
+
+    onUpdateFilter = (filter) => {
+        this.setState({filter});
+    }
+
     render () {
+        const {data, term} = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
+        const visibleData = this.filterData(this.searchEmp(data, term), this.state.filter); // отфильтрованный массив 
+        console.log(this.state.filter);
+
         return ( // добавляем все компоненты на страницу
         <div className = "app">
             <AppInfo 
@@ -66,12 +109,13 @@ class App extends Component {
             increased={increased}/>
 
             <div className="search-panel">
-                <SearchPanel/>
-                <AppFilter/>
+                <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+                <AppFilter
+                onUpdateFilter={this.onUpdateFilter}/>
             </div>
 
             <EmployeesList 
-            data={this.state.data}
+            data={visibleData}
             onDelete={this.deleteItem}
             onToggleProp={this.onToggleProp}/> {/*Через пропс передаём метод*/}
             <EmployeesAddForm
