@@ -12,12 +12,12 @@ class App extends Component {
         super(props);
         this.state = {
             data: [ // имитация данных с сервера
-                {name: "Alex I.", salary: 3000, increase: true, id: 1},
-                {name: "John A.", salary: 5000, increase: false, id: 2},
-                {name: "Carl W.", salary: 8000, increase: true, id: 3},
+                {name: "Alex I.", salary: 3000, increase: false, rise: true, id: 1},
+                {name: "John A.", salary: 5000, increase: false, rise: false, id: 2},
+                {name: "Carl W.", salary: 8000, increase: false, rise: false, id: 3},
             ],
             term: "",
-            filter: ""
+            filter: "rise"
         };
         this.maxId = 3;
         this.counter = 0;
@@ -74,33 +74,26 @@ class App extends Component {
         this.setState({term});
     }
 
-    filterData = (items, filter) => {
+    filterPost= (items, filter) => {
         switch (filter) {
             case "salary":
-                return items.filter(item => {
-                    return item.salary > 1000;
-                });
+                return items.filter(item => item.salary > 1000);
             case "rise": 
-                return items.filter(item => {
-                    return item.increase === true;
-                });
-            case "all":
-                return items;
+                return items.filter(item => item.rise);
             default:
                 return items;
         }
     }
 
-    onUpdateFilter = (filter) => {
+    onFilterSelect = (filter) => {
         this.setState({filter});
     }
 
     render () {
-        const {data, term} = this.state;
+        const {data, term, filter} = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
-        const visibleData = this.filterData(this.searchEmp(data, term), this.state.filter); // отфильтрованный массив 
-        console.log(this.state.filter);
+        const visibleData = this.filterPost(this.searchEmp(data, term), filter); // отфильтрованный массив 
 
         return ( // добавляем все компоненты на страницу
         <div className = "app">
@@ -110,8 +103,9 @@ class App extends Component {
 
             <div className="search-panel">
                 <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                <AppFilter
-                onUpdateFilter={this.onUpdateFilter}/>
+                <AppFilter 
+                filter={filter}
+                onFilterSelect={this.onFilterSelect}/>
             </div>
 
             <EmployeesList 
