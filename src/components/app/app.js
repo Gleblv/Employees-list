@@ -31,7 +31,7 @@ class App extends Component {
         });
     }
 
-    addItem = (name, salary) => { // функция для добавления нового объекта в массив
+    addItem = (name, salary) => { // функция для добавления нового объекта в массиве
         const newItem = { // создаём новый объект с помощью пришедших данных
             name, 
             salary,
@@ -39,6 +39,7 @@ class App extends Component {
             rise: false,
             id: ++this.maxId
         }
+
         this.setState(({data}) => { // пересоздаём data и добавляем в state
             const newArr = [...data, newItem];
             return {
@@ -63,7 +64,7 @@ class App extends Component {
             return items;
         };
 
-        if (term !== "") {
+        if (term !== "") { // если строка для поиска не равна пустой строке, то фильтруем элементы
             return items.filter(item => {
                 return item.name.indexOf(term) > -1; // ищет совпадения в строке 
             });
@@ -76,7 +77,7 @@ class App extends Component {
 
     filterPost= (items, filter) => {
         switch (filter) {
-            case "salary":
+            case "salary": // если состояние фильтра равно ..., то выполняем ...
                 return items.filter(item => item.salary > 1000);
             case "rise": 
                 return items.filter(item => item.rise);
@@ -87,6 +88,17 @@ class App extends Component {
 
     onFilterSelect = (filter) => {
         this.setState({filter});
+    }
+
+    getSalaryValue = (newSalary, oldSalary) => { // получаем значение динамически введённой з\п
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (oldSalary === item.salary) {
+                    return {...item, salary: [newSalary]}
+                }
+                return item;
+            })
+        }))
     }
 
     render () {
@@ -111,7 +123,8 @@ class App extends Component {
             <EmployeesList 
             data={visibleData}
             onDelete={this.deleteItem}
-            onToggleProp={this.onToggleProp}/> {/*Через пропс передаём метод*/}
+            onToggleProp={this.onToggleProp}
+            getSalaryValue={this.getSalaryValue}/> {/*Через пропс передаём метод*/}
             <EmployeesAddForm
             onAdd={this.addItem}/>
         </div>

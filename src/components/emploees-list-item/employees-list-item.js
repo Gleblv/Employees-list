@@ -1,8 +1,6 @@
 import "./employees-list-item.css";
 
-function EmployeesListItem (props) { // добавляем класс данные с сервера
-
-    const {name, salary, onDelete, onToggleProp, increase, rise} = props;
+function EmployeesListItem ({name, salary, onDelete, onToggleProp, increase, rise, getSalaryValue}) { // добавляем класс данные с сервера
 
     let classNames = "list-group-item d-flex justify-content-between";
 
@@ -17,7 +15,7 @@ function EmployeesListItem (props) { // добавляем класс данны
     return (
         <li className={classNames}>
             <span onClick={onToggleProp} className="list-group-item-label" data-toggle="rise">{name}</span> {/*С помощью data-атрибутов, передаём в обработчик события свойство которое нужно изменить*/}
-            <input type="text" className="list-group-item-input" defaultValue={salary + "$"}/>
+            <input  onChange={(e) => getSalaryValue(e.target.value, salary)} type="text" className="list-group-item-input" defaultValue={salary + "$"}/>
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     className="btn-cookie btn-sm " 
